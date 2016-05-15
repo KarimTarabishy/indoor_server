@@ -12,13 +12,14 @@ app.use(parser.json());
 
 
 var data = null, labels = null, knn = null, places = null, waps = null;
-
+var max = 1;
 //try to read
 try{
     data = JSON.parse(fs.readFileSync('./data.json', 'utf8'));
     labels = JSON.parse(fs.readFileSync('./labels.json', 'utf8'));
     waps = JSON.parse(fs.readFileSync('./waps.json', 'utf8'));
     places = JSON.parse(fs.readFileSync('./places.json', 'utf8'));
+    max = getMax(places);
     knn = new ml.KNN({
         data : data,
         result : labels
@@ -29,14 +30,23 @@ catch(err){
     labels = null;
     knn=null;
 }
-
+var getMax = function (data) {
+    var max = Number.MIN_VALUE;
+    for (var property in data) {
+        if (object.hasOwnProperty(property)) {
+            var n = Number(property);
+            if(n>max)
+                max = n;
+        }
+    }
+}
 
 app.post('/dataset', function(req, res, next){
     data = req.body.features;
     labels = req.body.classes;
     waps = req.body.waps;
     places = req.body.places;
-
+    max = getMax(places);
     if(!data || !labels || !waps || !places)
     {
         return next(new Error("failed to receive"));
@@ -73,6 +83,8 @@ app.post("/location", function (req,res,next) {
         weightf : {type : 'gaussian', sigma : 10.0},
         distance : {type : 'euclidean'}
     });
+    y = Math.round(y);
+    y = Math.min(max, y);
 	var location = places[y];
 	if(!location)
 	{
