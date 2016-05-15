@@ -10,13 +10,6 @@ var app = express();
 app.use(morgan("dev"));
 app.use(parser.json());
 
-mongoose.connect('mongodb://localhost/SomeDb');
-mongoose.connection.on("error", function (error) {
-   logger.error(error.message);
-});
-mongoose.connection.on("connected", function () {
-    logger.info("connected to database");
-});
 
 var data = null, labels = null, knn = null, places = null, waps = null;
 
