@@ -73,7 +73,12 @@ app.post("/location", function (req,res,next) {
         weightf : {type : 'gaussian', sigma : 10.0},
         distance : {type : 'euclidean'}
     });
-    res.json(places[y]);
+	var location = places[y];
+	if(!location)
+	{
+		location = {x:0,y:0,name:"Uknown"};
+	}
+    res.json();
 });
 
 // catch 404 and forward to error handler
