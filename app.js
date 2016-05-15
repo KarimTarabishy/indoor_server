@@ -78,7 +78,7 @@ app.post("/location", function (req,res,next) {
 	{
 		location = {x:0,y:0,name:"Uknown"};
 	}
-    res.json();
+    res.json(location);
 });
 
 // catch 404 and forward to error handler
