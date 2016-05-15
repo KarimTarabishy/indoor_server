@@ -33,7 +33,7 @@ catch(err){
 var getMax = function (data) {
     var max = Number.MIN_VALUE;
     for (var property in data) {
-        if (object.hasOwnProperty(property)) {
+        if (data.hasOwnProperty(property)) {
             var n = Number(property);
             if(n>max)
                 max = n;
@@ -84,7 +84,7 @@ app.post("/location", function (req,res,next) {
         distance : {type : 'euclidean'}
     });
     y = Math.round(y);
-    y = Math.min(max, y);
+    y = Math.min(3, y);
 	var location = places[y];
 	if(!location)
 	{
